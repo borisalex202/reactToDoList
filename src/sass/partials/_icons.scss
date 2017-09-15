@@ -1,0 +1,8 @@
+.icon {
+  @include transition(all .3s ease-in-out);
+
+  &-settings {
+    max-width: 25px;
+    max-height: 25px;
+  }
+}

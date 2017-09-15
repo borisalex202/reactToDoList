@@ -1,0 +1,368 @@
+.todolist {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+  @include box-shadow(0 0 60px 0 rgba(0, 0, 0, 0.25));
+
+  &__header {
+    padding: 40px 0;
+    border-bottom: 1px solid #5BA9F0;
+    position: relative;
+
+    &-settings {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      right: 0;
+      min-height: 400px;
+      z-index: 11;
+      pointer-events: none;
+      background-color: #fff;
+      @include transition(all .3s ease-in-out);
+      @include opacity(0);
+
+      &.active {
+        pointer-events: all;
+        @include opacity(1);
+      }
+      &_row {
+        @include flexbox();
+        @include flex-wrap(wrap);
+      }
+      &_label {
+        width: 50%;
+        color: #595959;
+        height: 60px;
+        line-height: 40px;
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      &_input {
+        width: 50%;
+        height: 60px;
+        line-height: 40px;
+        padding: 10px 20px;
+        font-size: 16px;
+
+        input {
+          width: 100%;
+          height: 40px;
+          border: 1px solid #595959;
+          background: #fff;
+          line-height: 40px;
+          font-size: 16px;
+          color: #595959;
+          padding: 0 10px;
+          @include transition(all .3s ease-in-out);
+          @include placeholder {
+            color: #5BAAF1;
+            @include transition(all .3s ease-in-out);
+          }
+          &:focus {
+            @include placeholder {
+              line-height: 200px;
+            }
+          }
+        }
+      }
+      &_btn {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        margin-top: -13px;
+      }
+    }
+  }
+  &__title {
+    font-size: 20px;
+    line-height: 20px;
+    color: #126dc2;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0;
+
+    span {
+      color: #ddd;
+    }
+  }
+  &__footer {
+    @include flexbox();
+  }
+  &__add {
+    &-input {
+      width: 70%;
+      height: 60px;
+      border: 1px solid #5BAAF1;
+      background: #fff;
+      line-height: 60px;
+      font-size: 16px;
+      color: #5BAAF1;
+      padding: 0 20px;
+      @include transition(all .3s ease-in-out);
+      @include placeholder {
+        color: #5BAAF1;
+        @include transition(all .3s ease-in-out);
+      }
+      &:focus {
+        @include placeholder {
+          line-height: 200px;
+        }
+      }
+      &.no-text {
+        border-color: #ddd;
+
+        @include placeholder {
+          color: #ddd;
+        }
+      }
+    }
+    &-btn {
+      width: 30%;
+      height: 60px;
+      border: 1px solid #5BAAF1;
+      background: #5BAAF1;
+      line-height: 55px;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      cursor: pointer;
+      @include transition(all .3s ease-in-out);
+
+      &:hover {
+        background: darken(#5BAAF1, 15%);
+        border-color: darken(#5BAAF1, 15%);
+      }
+      &:disabled {
+        background: #ddd;
+        border-color: #ddd;
+        pointer-events: none;
+        position: relative;
+        cursor: not-allowed;
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 9;
+          pointer-events: all;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  &__content {
+    min-height: 400px;
+    overflow: hidden;
+    padding-bottom: 150px;
+
+    &.empty {
+      position: relative;
+      @include transition(all .3s ease-in-out);
+
+      &:before {
+        content: 'Пусто';
+        font-size: 24px;
+        color: #ddd;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9;
+        pointer-events: none;
+        @include flexbox();
+        @include align-items(center);
+        @include justify-content(center);
+        @include transition(all .3s ease-in-out);
+      }
+    }
+  }
+  &__item {
+    height: 50px;
+    padding: 0 100px 0 20px;
+    background-color: #fff;
+    position: relative;
+    @include flexbox();
+    @include align-items(center);
+    @include transition(all .3s ease-in-out);
+
+    &:nth-child(odd) {
+      background-color: #F0F0F0;
+    }
+    &:hover {
+      .todolist__tools-item {
+        left: 0;
+      }
+    }
+    &.active {
+      z-index: 9;
+    }
+    &.complete {
+      background-color: #cbfdcb;
+      @include box-shadow(inset 0 -1px 0 0 rgba(#60ba60, .5));
+
+      .checkbox__text {
+        text-decoration: line-through;
+      }
+    }
+  }
+  &__tools {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    @include flexbox();
+
+    &.active {
+      z-index: 10;
+
+      .todolist__tools-item {
+        left: 0;
+      }
+    }
+    &-item {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      border: 0;
+      cursor: pointer;
+      padding: 0;
+      left: 100%;
+      @include transition(all .3s ease-in-out);
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        @include transition(all .3s ease-in-out);
+      }
+      &:hover:before {
+        @include transform(rotate(360deg));
+      }
+      @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+          @include transition-delay(#{$i/10}s)
+        }
+      }
+      &.info {
+        background-color: #FDA83D;
+
+        &:before {
+          background: url('../img/info.svg') center no-repeat;
+          background-size: 30px;
+        }
+      }
+      &.remove {
+        background-color: #F7474F;
+
+        &:before {
+          background: url('../img/remove.svg') center no-repeat;
+          background-size: 30px;
+        }
+      }
+      &.save {
+        background-color: #4fc017;
+
+        &:before {
+          background: url('../img/save.svg') center no-repeat;
+          background-size: 30px;
+        }
+      }
+    }
+  }
+  &__edit {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 20px;
+    margin: 0 -10px;
+    pointer-events: none;
+    @include flexbox();
+    @include flex-wrap(wrap);
+    @include box-shadow(0 10px 10px 0 rgba(0, 0, 0, .1));
+    @include opacity(0);
+
+    &.active {
+      pointer-events: all;
+      @include opacity(1);
+    }
+    &-text,
+    &-time {
+      height: 60px;
+      margin: 0 10px;
+      padding: 0 20px;
+      line-height: 20px;
+      font-size: 16px;
+      border: 1px solid #5BAAF1;
+      background: #fff;
+      color: #5BAAF1;
+      @include transition(all .3s ease-in-out);
+    }
+    &-text {
+      width: calc(100% - 20px);
+    }
+    &-time {
+      width: calc(30% - 20px);
+    }
+  }
+}
+.checkbox {
+  position: relative;
+
+  input {
+    display: none;
+
+    &:checked ~ .checkbox__icon:before {
+      @include opacity(1);
+    }
+  }
+  &__text {
+    font-size: 16px;
+    color: rgb(114, 114, 114);
+    padding-left: 35px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+  }
+  &__icon {
+    border: 1px solid rgb(213, 213, 213);
+    border-radius: 50%;
+    background-color: #fff;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      background-color: #126dc2;
+      border-radius: 50%;
+      @include transition(all .3s ease-in-out);
+      @include opacity(0);
+    }
+  }
+}
