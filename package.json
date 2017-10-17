@@ -18,6 +18,9 @@
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
     "imagemin-pngquant": "^5.0.1",
+    "react-datepicker": "^0.54.0",
+    "react-input-mask": "^1.0.7",
+    "react-native": "^0.49.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"

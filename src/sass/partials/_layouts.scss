@@ -20,8 +20,10 @@
       z-index: 11;
       pointer-events: none;
       background-color: #fff;
+      padding: 10px 0;
       @include transition(all .3s ease-in-out);
       @include opacity(0);
+      @include box-shadow(0 10px 10px 0 rgba(0, 0, 0, .1));
 
       &.active {
         pointer-events: all;
@@ -38,6 +40,13 @@
         line-height: 40px;
         padding: 10px 20px;
         font-size: 16px;
+
+        @media (max-width: 600px) {
+          width: 100%;
+          height: auto;
+          line-height: normal;
+          padding: 5px 10px;
+        }
       }
       &_input {
         width: 50%;
@@ -66,13 +75,44 @@
             }
           }
         }
+        @media (max-width: 600px) {
+          width: 100%;
+          padding: 5px 10px;
+          height: 55px;
+
+          input {
+            width: 100%;
+          }
+        }
       }
       &_btn {
         position: absolute;
         top: 50%;
         right: 20px;
-        margin-top: -13px;
+        margin-top: -14px;
+        z-index: 1;
+
+        @media (max-width: 600px) {
+          margin-top: -10px;
+        }
       }
+      @media (max-width: 600px) {
+        padding: 5px 0;
+      }
+    }
+    &-toggle_completes {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      margin-top: -16px;
+      z-index: 1;
+
+      @media (max-width: 600px) {
+        margin-top: -12px;
+      }
+    }
+    @media (max-width: 600px) {
+      padding: 20px 0;
     }
   }
   &__title {
@@ -85,7 +125,13 @@
     margin: 0;
 
     span {
-      color: #ddd;
+      color: #a7a7a7;
+    }
+    @media (max-width: 600px) {
+      font-size: 3vw;
+      line-height: normal;
+      position: relative;
+      top: 2px;
     }
   }
   &__footer {
@@ -117,6 +163,13 @@
         @include placeholder {
           color: #ddd;
         }
+      }
+
+      @media (max-width: 600px) {
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
       }
     }
     &-btn {
@@ -156,12 +209,29 @@
           cursor: not-allowed;
         }
       }
+      @media (max-width: 600px) {
+        width: 20%;
+        font-size: 0;
+        position: relative;
+        padding: 0;
+        height: 50px;
+        line-height: 45px;
+
+        &:after {
+          content: '+';
+          position: absolute;
+          top: -3px;
+          left: 3px;
+          right: 0;
+          bottom: 0;
+          font-size: 40px;
+        }
+      }
     }
   }
   &__content {
     min-height: 400px;
     overflow: hidden;
-    padding-bottom: 150px;
 
     &.empty {
       position: relative;
@@ -186,22 +256,62 @@
         @include transition(all .3s ease-in-out);
       }
     }
+
+    @media (max-width: 600px) {
+      min-height: calc(100vh - 61px - 45px);
+    }
   }
   &__item {
-    height: 50px;
-    padding: 0 100px 0 20px;
-    background-color: #fff;
     position: relative;
+    background-color: #fff;
+    border-bottom: 1px solid #F0F0F0;
     @include flexbox();
+    @include flex-wrap(wrap);
     @include align-items(center);
     @include transition(all .3s ease-in-out);
 
-    &:nth-child(odd) {
-      background-color: #F0F0F0;
-    }
+    //&:nth-child(odd) {
+    //  background-color: #F0F0F0;
+    //}
     &:hover {
       .todolist__tools-item {
         left: 0;
+
+        @for $i from 1 through 5 {
+          &:nth-child(#{$i}) {
+            @include transition-delay(#{$i/10}s)
+          }
+        }
+      }
+    }
+    .checkbox {
+      width: calc(100% - 100px);
+      height: 50px;
+      padding: 0 20px;
+      cursor: pointer;
+      @include flexbox();
+      @include align-items(center);
+      @include transition(all .3s ease-in-out);
+
+      &__icon {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0;
+      }
+      &__text {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 20px;
+      }
+      @media (max-width: 600px) {
+        padding: 0 10px;
+
+        &__text {
+          padding-left: 15px;
+        }
       }
     }
     &.active {
@@ -209,22 +319,25 @@
     }
     &.complete {
       background-color: #cbfdcb;
-      @include box-shadow(inset 0 -1px 0 0 rgba(#60ba60, .5));
 
       .checkbox__text {
         text-decoration: line-through;
       }
+      .checkbox__icon-checked {
+        @include opacity(1);
+      }
+    }
+    &.hidden {
+      display: none;
     }
   }
   &__tools {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
+    position: static;
+    width: auto;
     @include flexbox();
 
     &.active {
-      z-index: 10;
+      z-index: 0;
 
       .todolist__tools-item {
         left: 0;
@@ -254,7 +367,7 @@
       &:hover:before {
         @include transform(rotate(360deg));
       }
-      @for $i from 1 through 5 {
+      @for $i from 1 through -5 {
         &:nth-child(#{$i}) {
           @include transition-delay(#{$i/10}s)
         }
@@ -283,30 +396,38 @@
           background-size: 30px;
         }
       }
+      @media (max-width: 600px) {
+        left: 0;
+      }
     }
   }
   &__edit {
-    position: absolute;
+    position: relative;
     top: 100%;
-    left: 0;
-    right: 0;
-    background: #fff;
-    padding: 20px;
-    margin: 0 -10px;
+    width: 100%;
+    overflow: hidden;
     pointer-events: none;
+    max-height: 0;
+    padding: 0 10px;
     @include flexbox();
     @include flex-wrap(wrap);
     @include box-shadow(0 10px 10px 0 rgba(0, 0, 0, .1));
-    @include opacity(0);
+    @include transition(all .4s ease-in-out);
+    @include transform(scaleY(0));
 
     &.active {
+      padding: 20px 20px 0;
       pointer-events: all;
-      @include opacity(1);
+      max-height: 1000px;
+      overflow: inherit;
+      @include transform(scaleY(1));
+
+      @media (max-width: 600px) {
+        padding: 10px 10px 0;
+      }
     }
-    &-text,
-    &-time {
-      height: 60px;
-      margin: 0 10px;
+    &-text {
+      height: 40px;
       padding: 0 20px;
       line-height: 20px;
       font-size: 16px;
@@ -314,24 +435,69 @@
       background: #fff;
       color: #5BAAF1;
       @include transition(all .3s ease-in-out);
+
+      @media (max-width: 600px) {
+        padding: 0 10px;
+      }
     }
     &-text {
-      width: calc(100% - 20px);
+      width: 100%;
     }
     &-time {
-      width: calc(30% - 20px);
+
+      input {
+        width: 100% !important;
+        height: 40px;
+        padding: 0 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border: 1px solid #5BAAF1;
+        background: #fff;
+        color: #5BAAF1;
+        @include transition(all .3s ease-in-out);
+
+        @media (max-width: 600px) {
+          padding: 0 10px;
+        }
+      }
     }
+    &-row {
+      width: 100%;
+      margin-bottom: 20px;
+      @include flexbox();
+      @include flex-wrap(wrap);
+      @include align-items(center);
+      @media (max-width: 600px) {
+        margin-bottom: 10px;
+      }
+    }
+    &-label {
+      width: 50%;
+      color: #595959;
+      line-height: 40px;
+      font-size: 16px;
+
+      @media (max-width: 600px) {
+        width: 100%;
+      }
+    }
+    &-input {
+      width: 50%;
+
+      @media (max-width: 600px) {
+        width: 100%;
+      }
+    }
+  }
+  @media (max-width: 600px) {
+    overflow: hidden;
   }
 }
 .checkbox {
   position: relative;
 
-  input {
+  > input {
     display: none;
-
-    &:checked ~ .checkbox__icon:before {
-      @include opacity(1);
-    }
   }
   &__text {
     font-size: 16px;
@@ -346,13 +512,14 @@
     background-color: #fff;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     position: absolute;
     top: 0;
     left: 0;
     cursor: pointer;
 
-    &:before {
-      content: '';
+    &-checked {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -364,5 +531,73 @@
       @include transition(all .3s ease-in-out);
       @include opacity(0);
     }
+  }
+}
+.react-datepicker {
+  border-radius: 0;
+  border: 0;
+
+  &-popper {
+    //position: fixed !important;
+    top: -21% !important;
+    left: calc(50% - 121px) !important;
+    margin-top: 0 !important;
+    @include box-shadow(0 0 50px 0 rgba(0,0,0,.3));
+    @include transform(translate3d(0, 0, 0) !important);
+    @media (max-width: 600px) {
+      top: 10px !important;
+    }
+  }
+  &__header {
+    border-radius: 0;
+  }
+  &__current-month {
+    color: #fff;
+  }
+  &__day-name {
+    color: #fff;
+  }
+  &__navigation--next {
+    border-left-color: #fff;
+  }
+  &__navigation--previous {
+    border-right-color: #fff;
+  }
+  &__triangle {
+    display: none;
+  }
+  &__input-container,
+  &-wrapper {
+    width: 100%;
+  }
+}
+.switch {
+  position: relative;
+  height: 40px;
+  max-width: 80px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  border: 1px solid #595959;
+  background: #fff;
+
+  &.checked {
+    .switch-icon {
+      left: 3px;
+      background: rgb(91, 170, 241);
+    }
+  }
+  input {
+    display: none;
+    margin: 0;
+  }
+  &-icon {
+    position: absolute;
+    top: 3px;
+    left: calc(50% + 1px);
+    bottom: 3px;
+    width: 35px;
+    background: #a7a7a7;
+    @include transition(all .3s ease);
   }
 }

@@ -11,17 +11,23 @@ export class ToDoList extends React.Component {
         this.clearEmptyForm = this.clearEmptyForm.bind(this);
         this.changeColor = this.changeColor.bind(this);
         this.toggleSettings = this.toggleSettings.bind(this);
+        this.toggleComletes = this.toggleComletes.bind(this);
+        this.toggleReminder = this.toggleReminder.bind(this);
         this.state = {
             heading: 'Список заметок',
             items: [],
             colors: {
-                defaultColor: '#126dc2',
-                primaryColor: '#57a8f3'
+                defaultColor: '#5BAAF1',
+                primaryColor: '#5BAAF1',
+                textColor: '#727272',
+                completeBgColor: '#abffb7'
             },
             text: '',
             validForm: false,
             emptyForm: true,
-            settingsForm: false
+            settingsForm: false,
+            showCompletes: true,
+            logined: false
         };
     }
 
@@ -57,6 +63,7 @@ export class ToDoList extends React.Component {
         // Adding new item
         if(e.target.getElementsByClassName('todolist__add-input')[0].value.length > 0) {
             var newItem = {
+                id: 'note_' + getRandomInt(0, 100000),
                 title: this.state.text,
                 editForm: false,
                 complete: false
@@ -69,6 +76,10 @@ export class ToDoList extends React.Component {
                 emptyForm: false,
                 settingsForm: false
             });
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
         }
     }
 
@@ -100,6 +111,18 @@ export class ToDoList extends React.Component {
         });
     }
 
+    toggleComletes(e) {
+        this.setState({
+            showCompletes: e
+        });
+    }
+
+    toggleReminder(e) {
+        this.setState({
+            reminder: e
+        });
+    }
+
     render() {
         return (
             <div className='todolist'>
@@ -107,12 +130,18 @@ export class ToDoList extends React.Component {
                     heading={this.state.heading}
                     colors={this.state.colors}
                     settingsForm={this.state.settingsForm}
+                    showCompletes={this.state.showCompletes}
+                    reminder={this.state.reminder}
                     changeColor={this.changeColor}
-                    toggleSettings={this.toggleSettings} />
+                    toggleSettings={this.toggleSettings}
+                    toggleComletes={this.toggleComletes}
+                    toggleReminder={this.toggleReminder} />
                 <ToDoListContent
                     items={this.state.items}
                     emptyForm={this.state.emptyForm}
                     colors={this.state.colors}
+                    showCompletes={this.state.showCompletes}
+                    reminder={this.state.reminder}
                     clearContent={this.clearEmptyForm} />
                 <ToDoListFooter
                     text={this.state.text}

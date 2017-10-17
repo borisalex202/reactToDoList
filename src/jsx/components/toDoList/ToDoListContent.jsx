@@ -28,8 +28,6 @@ export class ToDoListContent extends React.Component {
         this.setState({
             items: currentItems
         });
-
-        console.log(currentItems)
     }
     handleEditTitle(i, text) {
         var currentItems = this.props.items;
@@ -62,8 +60,14 @@ export class ToDoListContent extends React.Component {
     }
 
     render() {
+        var dateInput = '.react-datepicker__input-container input { border-color: ' + this.props.colors.defaultColor + '; color: ' + this.props.colors.defaultColor + ';} .react-datepicker__input-container input::-webkit-input-placeholder, .react-datepicker__input-container input:-moz-placeholder, .react-datepicker__input-container input::-moz-placeholder, .react-datepicker__input-container input:-ms-input-placeholder { color: ' + this.props.colors.defaultColor + '; }',
+            datepickerStyles ='.react-datepicker__header { background-color: ' + this.props.colors.defaultColor + '; color: ' + this.props.colors.textColor + '; } .react-datepicker__day--keyboard-selected { background-color: ' + this.props.colors.defaultColor + '; }';
         return (
             <main className={this.props.emptyForm ? "todolist__content empty" : "todolist__content"}>
+                <style>
+                    {dateInput}
+                    {datepickerStyles}
+                </style>
                 {
                     this.props.items.map((item, i) =>
                         <ToDoListItem
@@ -73,6 +77,8 @@ export class ToDoListContent extends React.Component {
                             editForm={item.editForm}
                             complete={item.complete}
                             colors={this.props.colors}
+                            showCompletes={this.props.showCompletes}
+                            reminder={this.props.reminder}
                             toggleEditForm={this.handleEditForm}
                             removeItem={this.handleRemoveItem}
                             completeItem={this.handleCompleteItem}
